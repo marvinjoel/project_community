@@ -10,6 +10,35 @@ from community.models import EnlacesAPI, Community_info
 from urllib import parse, request
 
 
+class SearchPrivate(TemplateView):
+    template_name = 'searchchannel.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchPrivate, self).get_context_data(**kwargs)
+        context = {}
+        buscador = self.kwargs.get('name')
+        context['name'] = self.kwargs.get('name')
+
+        url_link = 'https://youtube.googleapis.com/youtube/v3/search'
+        part = 'snippet'
+        maxResults = 10
+        q = buscador
+        key = 'AIzaSyAz9mAAmXf7eVzsabaSK5C1Q0VAS6VyZkw'
+#
+        url = requests.get(
+            f'{url_link}?part={part}&maxResults={maxResults}&q={q}&type=channel&type=playlist&key={key}')
+        api = url.json()
+        items = api['items']
+        #context = dict(items)
+        prueba = {
+            'items': items
+        }
+
+        context = prueba
+        print(context)
+        return context
+
+
 class YoutubeView(TemplateView):
     template_name = 'youtube.html'
     api_key = 'AIzaSyAz9mAAmXf7eVzsabaSK5C1Q0VAS6VyZkw'
@@ -48,21 +77,6 @@ class YoutubeView(TemplateView):
         context['id'] = ides
         context['playlistId'] = playlistId
 
-        # API PARA LA PLAY LIST
-        # urlPlayList = requests.get(
-        #    f'{url_linkPlayList}?part={part}&playlistId={playlistId}&key={key}')
-        #apiPList = urlPlayList.json()
-        #itemsPList = apiPList['items']
-        #context['itemsPList'] = itemsPList
-#
-        # for j in itemsPList:
-        #    snippetPList = j['snippet']
-        #    titlePList = snippetPList['title']
-#
-        #context['snippetPList'] = snippetPList
-        #context['titlePList'] = titlePList
-
-        # print(json.dumps(channel, indent=4))
         context = self.channelData()
         return {'context': context}
 
