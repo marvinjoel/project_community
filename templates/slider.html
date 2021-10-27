@@ -1,0 +1,33 @@
+{% load static%}
+{% block slider %}
+    <link rel="stylesheet" href=" {% static 'css/flexslider.css' %} ">
+    <link rel="stylesheet" href=" {% static 'css/font-awesome.css' %} ">
+{% endblock %}
+<div class="flexslider">
+		<ul class="slides">
+			<li>
+				<img src="{% static 'img/1.jpg' %}" alt="">
+				<section class="caption">
+					<h2>Lorem slider #1</h2>
+				</section>
+			</li>
+			<li>
+				<img src="{% static 'img/2.jpg' %}" alt="">
+				<section class="caption">
+					<h2>Lorem slider #2</h2>
+				</section>
+			</li>
+
+			<li>
+				<img src="{% static 'img/3.jpg' %}" alt="">
+				<section class="caption">
+					<h2>Lorem slider #3</h2>
+				</section>
+			</li>
+		</ul>
+	</div>
+{% block sliderjs %}
+    <script src="{% static 'js/jquery-3.1.0.min.js' %}"></script>
+	<script src="{% static 'js/jquery.flexslider.js' %}"></script>
+	<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}
