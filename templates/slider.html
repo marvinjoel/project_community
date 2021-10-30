@@ -2,9 +2,8 @@
 {% block slider %}
     <link rel="stylesheet" href=" {% static 'css/flexslider.css' %} ">
     <link rel="stylesheet" href=" {% static 'css/font-awesome.css' %} ">
-{% endblock %}
 <div class="flexslider">
-		<ul class="slides">
+		<ul class="slides p-0">
 			<li>
 				<img src="{% static 'img/1.jpg' %}" alt="">
 				<section class="caption">
@@ -26,7 +25,6 @@
 			</li>
 		</ul>
 	</div>
-{% block sliderjs %}
     <script src="{% static 'js/jquery-3.1.0.min.js' %}"></script>
 	<script src="{% static 'js/jquery.flexslider.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
