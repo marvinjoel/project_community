@@ -2,6 +2,9 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
+from .utils.link_data import LinkData
+
+
 class Community_info(models.Model):
     title = models.CharField(verbose_name='Título',
                              max_length=300, blank=True, null=True)
@@ -49,15 +52,28 @@ class EnlacesAPI(models.Model):
     FIELDNAME = models.URLField()
 
 
-class Groups(models.Model):
-    url = models.URLField('group url', max_length=250,
-                          unique=True, blank=False, null=False)
-    name = models.CharField(
-        'group name', max_length=150, blank=True, null=True)
+class Link_Group(models.Model):
+    url = models.URLField('group url',
+            max_length=250,
+            unique=True,
+            blank=False,
+            null=False
+        )
+    name = models.CharField('group name', max_length=150, blank=True, null=True)
     description = models.TextField('group description', blank=True, null=True)
-    image = models.CharField(
-        'group image', max_length=200, blank=True, null=True)
-    created = models.DateField('date published')
+    image = models.CharField('group image', max_length=200, blank=True, null=True)
+    created = models.DateTimeField('date created',auto_now_add=True, blank=True)
 
-    def was_published_recently(self):
-        return self.created >= timezone.now() - datetime.timedelta(days=1)
+
+    def __str__(self):
+        return self.name
+
+    def save(self):
+        link_data = LinkData(self.url)
+        url_data = link_data.get_data()
+
+        self.name = url_data.get('name', None)
+        self.description = url_data.get('description', None)
+        self.image = url_data.get('image', None)
+
+        super(Link_Group, self).save()

@@ -1,6 +1,10 @@
 from django.contrib import admin
 
-from community.models import EnlacesAPI, Community_info, Groups
+from community.models import (
+        EnlacesAPI,
+        Community_info,
+        Link_Group
+    )
 
 
 @admin.register(Community_info)
@@ -13,7 +17,7 @@ class EnlacesAPIAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'FIELDNAME']
 
 
-@admin.register(Groups)
-class GroupsAdmin(admin.ModelAdmin):
-    list_display = ['id', 'url']
+@admin.register(Link_Group)
+class LinkGroupsAdmin(admin.ModelAdmin):
+    list_display = ['url', 'name', 'created']
     readonly_fields = ('name', 'description', 'image', 'created')

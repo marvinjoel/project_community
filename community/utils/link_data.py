@@ -1,5 +1,4 @@
 import requests
-import json
 from lxml import html
 
 
@@ -7,44 +6,55 @@ class LinkData():
 
     def __init__(self, url_group):
         self.url_group = url_group
-        self.headers = {
-            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.40',
-        }
+        self._html_response = self._html_from_url()
+
 
     def get_data(self):
-        raw_response = requests.get(self.url_group, headers=self.headers)
-        html_response = html.fromstring(raw_response.text)
-        name = html_response.xpath('//meta[@property="og:title"]/@content')
-        # name = []
+        data = {
+            'name': self._get_name(),
+            'description': self._get_description(),
+            'image': self._get_image(),
+        }
+
+        return data
+
+
+    def _html_from_url(self):
+        headers = {
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36 Edg/95.0.1020.40',
+        }
+        raw_response = requests.get(self.url_group, headers=headers)
+
+        return html.fromstring(raw_response.text)
+
+
+    def _get_name(self):
+        name = self._html_response.xpath('//meta[@property="og:title"]/@content')[0]
         if not name:
             print('title name')
-            name = html_response.xpath('//title/text()')
-        description = html_response.xpath(
-            '//meta[@property="og:description"]/@content')
+            name = self._html_response.xpath('//title/text()')
+
+        return name
+
+
+    def _get_description(self):
+        description = self._html_response.xpath('//meta[@property="og:description"]/@content')
         if not description:
-            description = html_response.xpath(
+            description = self._html_response.xpath(
                 '(//body/div[contains(@class, "container")]//p/text())[0]')
             if not description:
-                description = html_response.xpath(
+                description = self._html_response.xpath(
                     '//div[contains(@class, "container")]//p/text()')
         else:
             description = description[0]
 
-        image = html_response.xpath(
-            '//meta[@property="og:image"]/@content')
+        return description
+
+
+    def _get_image(self):
+        image = self._html_response.xpath('//meta[@property="og:image"]/@content')[0]
         if not image:
-            image = html_response.xpath(
+            image = self._html_response.xpath(
                 '//img/@src')
-        data = {
-            'name': name[0],
-            'description': description
-        }
-        return data
 
-
-# url_test = 'https://www.python.org/'
-# url_test = 'https://www.php.net/'
-url_test = 'https://www.djangoproject.com/'
-geturl = LinkData(url_test)
-response = geturl.get_data()
-print(response)
+        return image
