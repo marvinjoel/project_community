@@ -51,6 +51,7 @@
 .slides li,
 .slides li img{
 	width: 100%;
+	margin-bottom: 2.5px;
 	/*width: 98%;*/
 }
 
@@ -63,6 +64,7 @@
 .flex-control-nav.flex-control-paging{
 	width: 120px;
 	padding: 20px 0px;
+	margin-bottom: 0;
 	background: #1A89DF;
 	border: 2px solid rgba(255,255,255,.3);
 	border-radius: 10px;
@@ -101,6 +103,7 @@
 
 /* NAVEGACION ===============*/
 .flex-direction-nav{
+	margin-bottom: 0;
 	z-index: 3;
 	list-style: none;
 }
